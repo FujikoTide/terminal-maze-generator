@@ -241,47 +241,30 @@ def recursive_backtracking(maze, width, viable_pos, portal_in, portal_out):
         while True:
             unvisited_cells = []
             position_index = viable_pos.index(position)
-            # print(f"viable: {viable_pos}")
-            # print(f"width: {width}")
-            # print(f"pos: {position}")
-            # print(f"visited cells no return: {visited_cells}")
-            # print(f"length: {len(viable_pos)}")
-            # print(f"index: {position_index}")
-
 
             if check_direction(width, viable_pos, position, "n")[1] and viable_pos[position_index - width] not in visited_cells:
-                # print(f"n: {viable_pos[position_index - width]}")
                 unvisited_cells.append("n")
 
             if check_direction(width, viable_pos, position, "s")[1] and viable_pos[position_index + width] not in visited_cells:
-                # print(f"s: {viable_pos[position_index + width]}")
                 unvisited_cells.append("s")
 
             if check_direction(width, viable_pos, position, "w")[1] and viable_pos[position_index - 1] not in visited_cells:
-                # print(f"w: {viable_pos[position_index - 1]}")
                 unvisited_cells.append("w")
 
             if check_direction(width, viable_pos, position, "e")[1] and viable_pos[position_index + 1] not in visited_cells:
-                # print(f"e: {viable_pos[position_index + 1]}")
                 unvisited_cells.append("e")
 
             if len(unvisited_cells) == 0:
-                # print(f"visited cells: {visited_cells}")
-                # print("returned")
                 return
             else:
                 next_direction = random.choice(unvisited_cells)
                 if next_direction == "n":
-                    # print(f"n here !")
                     position = remove_wall(maze, width, viable_pos, position, "n")[1]
                 elif next_direction == "s":
-                    # print(f"s here !")
                     position = remove_wall(maze, width, viable_pos, position, "s")[1]
                 elif next_direction == "w":
-                    # print(f"w here !")
                     position = remove_wall(maze, width, viable_pos, position, "w")[1]
                 elif next_direction == "e":
-                    # print(f"e here !")
                     position = remove_wall(maze, width, viable_pos, position, "e")[1]
 
                 visited_cells.append(position)
