@@ -5,7 +5,10 @@ DIRECTIONS = ["n", "e", "s", "w"]
 
 
 def main():
+
+    # args for number maze on/off, manhatten numbers on/off, portals on/off, algorithm, distance between portals, portals on the edge, help menu, limit for sizes
     width, height = int(sys.argv[1]), int(sys.argv[2])
+
 
     maze = build_blank_maze(width, height)
     # prints blank maze
@@ -13,7 +16,7 @@ def main():
     viable_pos = get_viable_pos(width, height)
     xy = generate_xy(width, viable_pos)
 
-    portal_in, portal_out = get_portals(width, height, viable_pos, xy, 3, False)
+    portal_in, portal_out = get_portals(width, height, viable_pos, xy, 3, True)
 
     maze = construct_maze(maze, portal_in, portal_out, width,
                           viable_pos, xy, num_maze=False, portals=True, mn_num=False, algorithm="recursive_backtrack")
@@ -350,6 +353,9 @@ def number_maze(viable_pos: []) -> {}:
 
 def remove_wall(maze: [], width: int, viable_pos: [], cell: int, direction: str) -> tuple:
     cell1, cell2, direction = check_direction(width, viable_pos, cell, direction)
+
+    # if (cell2 == None):
+    #     return cell1, cell2, direction
 
     if direction in ["e", "w"]:
         maze[int((cell1 + cell2) / 2)] = " "
