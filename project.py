@@ -5,61 +5,18 @@ DIRECTIONS = ["n", "e", "s", "w"]
 
 
 def main():
-    #       Turn this into a class, at least the parts that make sense
-    #       that will solve the recalling of the generate xy function,
-    #       can store that as a class/instance variable
-    #
-    #       TODO:
-    #           make class
-    #           error checking/handling
-    #           each data layer stored separately
-    #           all stored in json
 
+    # args for number maze on/off, manhatten numbers on/off, portals on/off, algorithm, distance between portals, portals on the edge, help menu, limit for sizes
     width, height = int(sys.argv[1]), int(sys.argv[2])
-
-    #   TODO:
-    #       if distance is specified, it cannot be more than
-    #       width - 1 + height - 1
-    #       specify within distance or must be
-    #       outside distance?
-    #       Make a function to take all the arrays and make a NEW array
-    #       superimpose the arrays to make a new array with all the
-    #       values applied and return that
-    #       try to remove the string keys values from the xy dict
-    #       and make them ints instead and clean up the code
-    #       everywhere they are referenced as strings? DONE?
-
-    #   TODO:
-    #       Make sure to make a copy of the maze and then apply the other data to it
-    #       according to the arguments:
-    #       manhattan numbers, entrance/exit etc
-
-    #    TODO:
-    #        Refactor
-    #        Make everything that uses horrible array maths use
-    #        enumerate and slices?
-    #        Save maze to text file! (see above: json!)
-    #
-
-
-    #   TODO:
-    #       Function that returns a character from whichever character set has been specified by the user using command line flag for the wall pieces
-    #       Default pieces are the current ones
-    #       Those characters can be stored in a dict, and returned depending on which charset is specified with a command line flag
-    #       a command line flag for specifying a single char to replace ALL wall pieces, i.e. "@" makes a maze with @ for walls
-    #       build_blank_maze function and clean_maze function would need to be modified at least?
-    #       need a new function to return the correct wall piece
-    #       this function is called from the previous 2 maze functions instead of hard coded wall piece?
-
-
 
 
     maze = build_blank_maze(width, height)
-    print(output_maze(maze, width, height))
+    # prints blank maze
+    # print(output_maze(maze, width, height))
     viable_pos = get_viable_pos(width, height)
     xy = generate_xy(width, viable_pos)
-    # distance needs command line arg? maybe others too?
-    portal_in, portal_out = get_portals(width, height, viable_pos, xy, 3, False)
+
+    portal_in, portal_out = get_portals(width, height, viable_pos, xy, 3, True)
 
     maze = construct_maze(maze, portal_in, portal_out, width,
                           viable_pos, xy, num_maze=False, portals=True, mn_num=False, algorithm="recursive_backtrack")
@@ -118,10 +75,6 @@ def output_maze(maze: [], width: int, height: int) -> str:
 
     return combined
 
-
-# need to rethink arguments
-# process them and add them to some list? or use argv? well
-# have to do that regardless
 def construct_maze(
         maze: [],
         portal_in: int,
