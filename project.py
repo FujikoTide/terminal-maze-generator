@@ -354,8 +354,8 @@ def number_maze(viable_pos: []) -> {}:
 def remove_wall(maze: [], width: int, viable_pos: [], cell: int, direction: str) -> tuple:
     cell1, cell2, direction = check_direction(width, viable_pos, cell, direction)
 
-    # if (cell2 == None):
-    #     return cell1, cell2, direction
+    if (cell2 == None):
+        return cell1, cell2, direction
 
     if direction in ["e", "w"]:
         maze[int((cell1 + cell2) / 2)] = " "
