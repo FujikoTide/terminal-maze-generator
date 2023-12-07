@@ -1,6 +1,7 @@
-import sys
+import sys # not needed with argparse?
 import random
 import argparse
+import math
 
 
 DIRECTIONS = ["n", "e", "s", "w"]
@@ -54,16 +55,25 @@ DIRECTIONS = ["n", "e", "s", "w"]
     #       this function is called from the previous 2 maze functions instead of hard coded wall piece?
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate a maze in the terminal with a variety of options, minimum size 3 x 3")
+    parser = argparse.ArgumentParser(description="Generate a maze in the terminal with a variety of options, minimum size 3 x 3", formatter_class=argparse.ArgumentDefaultsHelpFormatter, allow_abbrev=True)
+
     parser.add_argument("width", help="the width of the maze you wish to generate", type=int)
+
     parser.add_argument("height", help="the height of the maze you wish to generate", type=int)
-    parser.add_argument("-a", "--algorithm", type=str, choices=["rnd", "bt", "sw", "rw", "rb"], default="recursive_backtrack", help="specify maze generating algorithm (random, binary tree, sidewinder, random walk, recursive backtrack[default])", required=False)
+
+    parser.add_argument("-a", "--algorithm", type=str, choices=["rnd", "bt", "sw", "rw", "rb"], default="recursive_backtrack", help="specify maze generating algorithm (random, binary tree, sidewinder, random walk, recursive backtrack)")
+
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("-n", "--numbers", type=bool, choices=[True, False], default=False, help="numbers the cells of the maze [default=False]", required=False)
-    group.add_argument("-m", "--manhattan_distance", type=bool, choices=[True, False], default=False, help="numbers the cells of the maze with manhattan distance numbering [default=False]", required=False)
-    parser.add_argument("-p", "--portals", type=bool, choices=[True, False], default=True, help="show entry and exit points in the maze [default=True]", required=False)
-    parser.add_argument("-e", "--edge", type=bool, choices=[True, False], default=False, help="align portals to the outside edge of the maze [default=False]", required=False)
-    parser.add_argument("-d", "--distance", type=int, default=0, help="the minimum distance the entry and exit can be apart [default=0]", required=False)
+
+    group.add_argument("-n", "--numbers", default=False, help="numbers the cells of the maze", action="store_true")
+
+    group.add_argument("-m", "--manhattan_distance", default=False, help="numbers the cells of the maze with manhattan distance numbering", action="store_true")
+
+    parser.add_argument("-p", "--portals", default=True, help="show entry and exit points in the maze", action="store_false")
+
+    parser.add_argument("-e", "--edge", default=False, help="align portals to the outside edge of the maze",  action="store_true")
+
+    parser.add_argument("-d", "--distance", type=int, default=0, help="the minimum distance the entry and exit can be apart")
 
     # flags: distance between portals, portals on/off, manhattan numbers on/off, numbers on/off, portals on the edge on/off, minimum size for maze: 3
     args = parser.parse_args()
@@ -82,21 +92,27 @@ def main():
     elif (args.algorithm == "recursive_backtrack" or args.algorithm == "rb"):
         algorithm = "recursive_backtrack"
 
-    # if (len(sys.argv) < 2):
-    #     print("not enough arguments !")
-    # else:
-    width, height = int(sys.argv[1]), int(sys.argv[2])
+    numbers = args.numbers
+    manhattan_distance = args.manhattan_distance
+    portals = args.portals
+    edge = args.edge
+    distance = args.distance
+
 
     maze = build_blank_maze(width, height)
     # print(output_maze(maze, width, height))
     viable_pos = get_viable_pos(width, height)
     xy = generate_xy(width, viable_pos)
     # distance needs command line arg? maybe others too?
-    portal_in, portal_out = get_portals(width, height, viable_pos, xy, 3, False)
+    portal_in, portal_out = get_portals(width, height, viable_pos, xy, distance, edge)
 
     maze = construct_maze(maze, portal_in, portal_out, width,
-                        viable_pos, xy, num_maze=False, portals=True, mn_num=False, algorithm=algorithm)
-    print(algorithm)
+                        viable_pos, xy, num_maze=numbers, portals=portals, mn_num=manhattan_distance, algorithm=algorithm)
+
+    print(args)
+    print(width, height, algorithm, numbers, manhattan_distance, portals, edge, distance)
+    print(type(width), type(height), type(algorithm), type(numbers), type(manhattan_distance), type(portals), type(edge), type(distance))
+
     print(output_maze(maze, width, height))
 
 
@@ -338,6 +354,8 @@ def get_portals(
         distance: int = None,
         edge: bool = None,
 ) -> tuple:
+    if (distance > math.floor(math.sqrt(pow(width, 2) + pow(height, 2)))):
+        distance = math.floor(math.sqrt(pow(width, 2) + pow(height, 2)))
     if edge:
         edges = get_edge_pos(width, height, viable_pos)
 
