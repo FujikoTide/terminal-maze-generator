@@ -1,10 +1,13 @@
 import sys
 import random
+import argparse
+
 
 DIRECTIONS = ["n", "e", "s", "w"]
 
 
-def main():
+
+
     #       Turn this into a class, at least the parts that make sense
     #       that will solve the recalling of the generate xy function,
     #       can store that as a class/instance variable
@@ -15,7 +18,6 @@ def main():
     #           each data layer stored separately
     #           all stored in json
 
-    width, height = int(sys.argv[1]), int(sys.argv[2])
 
     #   TODO:
     #       if distance is specified, it cannot be more than
@@ -51,18 +53,27 @@ def main():
     #       need a new function to return the correct wall piece
     #       this function is called from the previous 2 maze functions instead of hard coded wall piece?
 
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("width", help="the width of the maze you wish to generate", type=int)
+    parser.add_argument("height", help="the height of the maze you wish to generate", type=int)
+    parser.parse_args()
 
 
+    # if (len(sys.argv) < 2):
+    #     print("not enough arguments !")
+    # else:
+    width, height = int(sys.argv[1]), int(sys.argv[2])
 
     maze = build_blank_maze(width, height)
-    print(output_maze(maze, width, height))
+    # print(output_maze(maze, width, height))
     viable_pos = get_viable_pos(width, height)
     xy = generate_xy(width, viable_pos)
     # distance needs command line arg? maybe others too?
     portal_in, portal_out = get_portals(width, height, viable_pos, xy, 3, False)
 
     maze = construct_maze(maze, portal_in, portal_out, width,
-                          viable_pos, xy, num_maze=False, portals=True, mn_num=False, algorithm="recursive_backtrack")
+                        viable_pos, xy, num_maze=False, portals=True, mn_num=False, algorithm="recursive_backtrack")
     print(output_maze(maze, width, height))
 
 
