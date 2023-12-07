@@ -54,11 +54,33 @@ DIRECTIONS = ["n", "e", "s", "w"]
     #       this function is called from the previous 2 maze functions instead of hard coded wall piece?
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Generate a maze in the terminal with a variety of options, minimum size 3 x 3")
     parser.add_argument("width", help="the width of the maze you wish to generate", type=int)
     parser.add_argument("height", help="the height of the maze you wish to generate", type=int)
-    parser.parse_args()
+    parser.add_argument("-a", "--algorithm", type=str, choices=["rnd", "bt", "sw", "rw", "rb"], default="recursive_backtrack", help="specify maze generating algorithm (random, binary tree, sidewinder, random walk, recursive backtrack[default])")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-n", "--numbers", type=bool, choices=[True, False], default=False, help="numbers the cells of the maze [default=False]")
+    group.add_argument("-m", "--manhattan_distance", type=bool, choices=[True, False], default=False, help="numbers the cells of the maze with manhattan distance numbering [default=False]")
+    parser.add_argument("-p", "--portals", type=bool, choices=[True, False], default=True, help="show entry and exit points in the maze [default=True]")
+    parser.add_argument("-e", "--edge", type=bool, choices=[True, False], default=False, help="align portals to the outside edge of the maze [default=False]")
+    parser.add_argument("-d", "--distance", type=int, default=0, help="the minimum distance the entry and exit can be apart [default=0]")
 
+    # flags: distance between portals, portals on/off, manhattan numbers on/off, numbers on/off, portals on the edge on/off, minimum size for maze: 3
+    args = parser.parse_args()
+
+    width = args.width
+    height = args.height
+
+    if (args.algorithm == "random" or args.algorithm == "rnd"):
+        algorithm = "random"
+    elif (args.algorithm == "binarytree" or args.algorithm == "bt"):
+        algorithm = "binarytree"
+    elif (args.algorithm == "sidewinder" or args.algorithm == "sw"):
+        algorithm = "sidewinder"
+    elif (args.algorithm == "randomwalk" or args.algorithm == "rw"):
+        algorithm = "randomwalk"
+    elif (args.algorithm == "recursive_backtrack" or args.algorithm == "rb"):
+        algorithm = "recursive_backtrack"
 
     # if (len(sys.argv) < 2):
     #     print("not enough arguments !")
@@ -73,7 +95,8 @@ def main():
     portal_in, portal_out = get_portals(width, height, viable_pos, xy, 3, False)
 
     maze = construct_maze(maze, portal_in, portal_out, width,
-                        viable_pos, xy, num_maze=False, portals=True, mn_num=False, algorithm="recursive_backtrack")
+                        viable_pos, xy, num_maze=False, portals=True, mn_num=False, algorithm=algorithm)
+    print(algorithm)
     print(output_maze(maze, width, height))
 
 
@@ -158,7 +181,7 @@ def construct_maze(
         algo_randomwalk(maze, width, viable_pos)
 
     if algorithm == "recursive_backtrack":
-        recursive_backtracking(maze, width, viable_pos, portal_in, portal_out)
+        algo_recursive_backtracking(maze, width, viable_pos, portal_in, portal_out)
 
     cleaned_maze = clean_maze(maze, width, viable_pos)
     for _ in cleaned_maze:
@@ -243,7 +266,7 @@ def algo_randomwalk(maze, width, viable_pos):
         visited_cells.append(old_pos)
 
 
-def recursive_backtracking(maze, width, viable_pos, portal_in, portal_out):
+def algo_recursive_backtracking(maze, width, viable_pos, portal_in, portal_out):
     start_position = get_random_pos(viable_pos, portal_in, portal_out)
     visited_cells = [start_position]
 
