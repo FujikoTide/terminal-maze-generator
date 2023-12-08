@@ -46,7 +46,8 @@ Entering `python project.py width height` will produce a maze of the specified w
 
 `width` and `height` are restricted to between 3 and 45 units inclusively each.
 
-`python project.py 10 10` will produce: ![standard 10 x 10 maze](/images/1010.png)
+`python project.py 10 10` will produce:\
+![standard 10 x 10 maze](/images/1010.png)
 
 #### Flags:
 
