@@ -4,6 +4,8 @@
 
 ## Description: A Terminal Maze Generator
 
+A Terminal Maze Generator that allows you to maze a maze of dynamic size, from 3 x 3 cells in size minimum, to 45 x 45 cells in size maximum, using a variety of algorithms to form the maze, and some options to change the display of the finished maze.
+
 ### Usage:
 
 #### Help:
