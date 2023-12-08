@@ -70,20 +70,20 @@ Entering `python project.py width height` will produce a maze of the specified w
 
 #### Examples:
 
-`python project.py 10 10 -p`:\ 
+`python project.py 10 10 -p`:\
 ![no portals 10 x 10 maze](/images/1010noportal.png)
 
-`python project.py 10 10 -n`:\ 
+`python project.py 10 10 -n`:\
 ![numbered 10 x 10 maze](/images/1010numbered.png)
 
-`python project.py 10 10 -m`:\ 
+`python project.py 10 10 -m`:\
 ![manhattan distance 10 x 10 maze](/images/1010manhattan.png)
 
-`python project.py 10 10 -p -m`:\ 
+`python project.py 10 10 -p -m`:\
 ![no portals manhattan distance 10 x 10 maze](/images/1010noportalmanhattan.png)
 
-`python project.py 10 10 -d 20`:\ 
+`python project.py 10 10 -d 20`:\
 ![standard 10 x 10 maze maximum distance](/images/1010distancemax.png)
 
-`python project.py 10 10 -b`:\ 
+`python project.py 10 10 -b`:\
 ![blank 10 x 10 maze](/images/1010blank.png)
