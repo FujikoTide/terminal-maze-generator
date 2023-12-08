@@ -10,7 +10,8 @@
 
 Entering `python project.py -h` will give you the help:
 
-```usage: project.py [-h] [-a {rnd,bt,sw,rb}] [-n | -m] [-p] [-e] [-b] [-d DISTANCE] width height
+```
+usage: project.py [-h] [-a {rnd,bt,sw,rb}] [-n | -m] [-p] [-e] [-b] [-d DISTANCE] width height
 
 Generate a maze in the terminal with a variety of options, minimum size 3 x 3
 
