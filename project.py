@@ -58,13 +58,13 @@ def main():
 
 
 def get_input() -> tuple:
-    parser = argparse.ArgumentParser(description="Generate a maze in the terminal with a variety of options, minimum size 3 x 3", formatter_class=argparse.ArgumentDefaultsHelpFormatter, allow_abbrev=True, usage="%(prog)s [-h] [-a {rnd,bt,sw,rw,rb}] [-n | -m] [-p] [-e] [-b] [-d DISTANCE] width height")
+    parser = argparse.ArgumentParser(description="Generate a maze in the terminal with a variety of options, minimum size 3 x 3", formatter_class=argparse.ArgumentDefaultsHelpFormatter, allow_abbrev=True, usage="%(prog)s [-h] [-a {rnd,bt,sw,rb}] [-n | -m] [-p] [-e] [-b] [-d DISTANCE] width height", epilog="terminal maze generator v1.0")
 
     parser.add_argument("width", help="the width of the maze you wish to generate, range(3 to 45)", type=int, choices=range(3, 46), metavar="width")
 
     parser.add_argument("height", help="the height of the maze you wish to generate, range(3 to 45)", type=int, choices=range(3, 46), metavar="height")
 
-    parser.add_argument("-a", "--algorithm", type=str, choices=["rnd", "bt", "sw", "rw", "rb"], default="recursive_backtrack", help="specify maze generating algorithm (random, binary tree, sidewinder, random walk, recursive backtrack)")
+    parser.add_argument("-a", "--algorithm", type=str, choices=["rnd", "bt", "sw", "rb"], default="recursive_backtrack", help="specify maze generating algorithm (random, binary tree, sidewinder, random walk, recursive backtrack)")
 
     group = parser.add_mutually_exclusive_group()
 
@@ -91,8 +91,6 @@ def get_input() -> tuple:
         algorithm = "binarytree"
     elif (args.algorithm == "sidewinder" or args.algorithm == "sw"):
         algorithm = "sidewinder"
-    elif (args.algorithm == "randomwalk" or args.algorithm == "rw"):
-        algorithm = "randomwalk"
     elif (args.algorithm == "recursive_backtrack" or args.algorithm == "rb"):
         algorithm = "recursive_backtrack"
 
@@ -182,9 +180,6 @@ def construct_maze(
     if algorithm == "sidewinder":
         algo_sidewinder(maze, width, viable_pos)
 
-    if algorithm == "randomwalk":
-        algo_randomwalk(maze, width, viable_pos)
-
     if algorithm == "recursive_backtrack":
         algo_recursive_backtracking(maze, width, viable_pos, portal_in, portal_out)
 
@@ -259,16 +254,6 @@ def algo_sidewinder(maze, width, viable_pos):
                 remove_wall(maze, width, viable_pos, cell_up, "n")
                 cells.clear()
         current_position += 1
-
-
-def algo_randomwalk(maze, width, viable_pos):
-    current_position = random.choice(viable_pos)
-    pos = viable_pos[current_position]
-    visited_cells = []
-    while pos not in visited_cells:
-        next_direction = random.choice(DIRECTIONS)
-        old_pos, pos, old_direction = remove_wall(maze, width, viable_pos, pos, next_direction)
-        visited_cells.append(old_pos)
 
 
 def algo_recursive_backtracking(maze, width, viable_pos, portal_in, portal_out):
