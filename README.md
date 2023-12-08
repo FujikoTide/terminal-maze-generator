@@ -87,3 +87,13 @@ Portals at Max Distance `python project.py 10 10 -d 20`:\
 
 Blank Maze `python project.py 10 10 -b`:\
 ![blank 10 x 10 maze](/images/1010blank.png)
+
+#### Sizes:
+
+Mazes can be different sizes and shapes!
+
+20 width 5 height `python project.py 20 5`:\
+![standard 20 x 5 maze](/images/205.png)
+
+10 width 30 height `python project.py 10 30`:\
+![standard 10 x 10 maze](/images/1030.png)
