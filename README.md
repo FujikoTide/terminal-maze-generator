@@ -10,7 +10,7 @@
 
 Entering `python project.py -h` will give you the help:
 
-````usage: project.py [-h] [-a {rnd,bt,sw,rb}] [-n | -m] [-p] [-e] [-b] [-d DISTANCE] width height
+```usage: project.py [-h] [-a {rnd,bt,sw,rb}] [-n | -m] [-p] [-e] [-b] [-d DISTANCE] width height
 
 Generate a maze in the terminal with a variety of options, minimum size 3 x 3
 
@@ -34,11 +34,21 @@ options:
   -d DISTANCE, --distance DISTANCE
                         the minimum distance the entry and exit can be apart (default: 0)
 
-terminal maze generator v1.0```
-````
+terminal maze generator v1.0
+```
 
 #### Standard Use:
 
 Entering `python project.py width height` will produce a maze of the specified width and height, e.g:
 
 `python project.py 10 10` will produce: ![standard 10 x 10 maze](/images/standard1010.png)
+
+#### Flags:
+
+`-h`: shows help
+`-a`: specifies algorithm used to generate maze, options are:
+
+- `rnd` : Random, not a true maze
+- `bt` : Binary Tree, a maze with distinct open paths on two sides
+- `sw` : Sidewinder, a maze with a distinct open path along the top edge
+- `rb` : Recursive Backtrack, a true maze (default algorithm)
