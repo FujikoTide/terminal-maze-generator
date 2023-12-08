@@ -44,6 +44,8 @@ terminal maze generator v1.0
 
 Entering `python project.py width height` will produce a maze of the specified width and height, e.g:
 
+`WIDTH` and `HEIGHT` are restricted to between 3 and 45 units inclusively each.
+
 `python project.py 10 10` will produce: ![standard 10 x 10 maze](/images/standard1010.png)
 
 #### Flags:
