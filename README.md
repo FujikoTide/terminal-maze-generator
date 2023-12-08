@@ -1,4 +1,4 @@
-# YOUR PROJECT TITLE
+# Terminal Maze Generator
 
 #### Video Demo: <URL HERE>
 
@@ -46,10 +46,11 @@ Entering `python project.py width height` will produce a maze of the specified w
 
 #### Flags:
 
-`-h`: shows help
-`-a`: specifies algorithm used to generate maze, options are:
+`-h`: shows help\
+`-a`: specifies algorithm used to generate maze, options are:\
 
 - `rnd` : Random, not a true maze
 - `bt` : Binary Tree, a maze with distinct open paths on two sides
 - `sw` : Sidewinder, a maze with a distinct open path along the top edge
 - `rb` : Recursive Backtrack, a true maze (default algorithm)
+
