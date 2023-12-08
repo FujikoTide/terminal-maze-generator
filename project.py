@@ -4,44 +4,6 @@ import argparse
 DIRECTIONS = ["n", "e", "s", "w"]
 
 
-    #       Turn this into a class, at least the parts that make sense
-    #       that will solve the recalling of the generate xy function,
-    #       can store that as a class/instance variable
-    #
-    #       TODO:
-    #           make class
-    #           error checking/handling
-    #           each data layer stored separately
-    #           all stored in json
-
-
-    #   TODO:
-    #       Make a function to take all the arrays and make a NEW array
-    #       superimpose the arrays to make a new array with all the
-    #       values applied and return that
-
-    #   TODO:
-    #       Make sure to make a copy of the maze and then apply the other data to it
-    #       according to the arguments:
-    #       manhattan numbers, entrance/exit etc
-
-    #    TODO:
-    #        Refactor
-    #        Make everything that uses horrible array maths use
-    #        enumerate and slices?
-    #        Save maze to text file! (see above: json!)
-    #
-
-
-    #   TODO:
-    #       Function that returns a character from whichever character set has been specified by the user using command line flag for the wall pieces
-    #       Default pieces are the current ones
-    #       Those characters can be stored in a dict, and returned depending on which charset is specified with a command line flag
-    #       a command line flag for specifying a single char to replace ALL wall pieces, i.e. "@" makes a maze with @ for walls
-    #       build_blank_maze function and clean_maze function would need to be modified at least?
-    #       need a new function to return the correct wall piece
-    #       this function is called from the previous 2 maze functions instead of hard coded wall piece?
-
 def main():
     width, height, algorithm, numbers, manhattan_distance, portals, edge, blank, distance = get_input()
 
