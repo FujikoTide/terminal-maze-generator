@@ -96,8 +96,7 @@ def main():
     portals = args.portals
     edge = args.edge
     distance = args.distance
-    if (width * height >
-         1000):
+    if (width * height > 1000):
         numbers = False
 
 
