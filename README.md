@@ -54,10 +54,10 @@ Entering `python project.py width height` will produce a maze of the specified w
 - `sw` : Sidewinder, a maze with a distinct open path along the top edge
 - `rb` : Recursive Backtrack, a true maze (default algorithm)
 
-`-n` : Show numbered cells in the maze (mutually exclusive with manhattan distance)
+`-n` : Show numbered cells in the maze (mutually exclusive with manhattan distance)\
 `-m` : manhattan distance in the maze (mutually exclusive with numbered cells)
 
-`-p` : Show portals in the maze (IN/OUT markers)
+`-p` : Show portals in the maze (IN/OUT markers)\
 `-e` : Force portals to appear in the outermost cells of the maze
 
 `-b` : Draw a blank unmodified maze
