@@ -44,9 +44,9 @@ terminal maze generator v1.0
 
 Entering `python project.py width height` will produce a maze of the specified width and height, e.g:
 
-`WIDTH` and `HEIGHT` are restricted to between 3 and 45 units inclusively each.
+`width` and `height` are restricted to between 3 and 45 units inclusively each.
 
-`python project.py 10 10` will produce: ![standard 10 x 10 maze](/images/standard1010.png)
+`python project.py 10 10` will produce: ![standard 10 x 10 maze](/images/1010.png)
 
 #### Flags:
 
@@ -59,11 +59,25 @@ Entering `python project.py width height` will produce a maze of the specified w
 - `rb` : Recursive Backtrack, a true maze (default algorithm)
 
 `-n` : Show numbered cells in the maze (mutually exclusive with manhattan distance)\
-`-m` : manhattan distance in the maze (mutually exclusive with numbered cells)
+`-m` : Show manhattan distance in the maze (mutually exclusive with numbered cells)
 
 `-p` : Show portals in the maze (IN/OUT markers)\
 `-e` : Force portals to appear in the outermost cells of the maze
 
 `-b` : Draw a blank unmodified maze
 
-`-d DISTANCE`: Forces the portals to be `DISTANCE` apart up to the limits of the maze boundarys
+`-d DISTANCE`: Forces the portals to be `DISTANCE` units apart up to the limits of the maze boundarys
+
+#### Examples:
+
+`python project.py 10 10 -p`: ![no portals 10 x 10 maze](/images/1010noportal.png)
+
+`python project.py 10 10 -n`: ![numbered 10 x 10 maze](/images/1010numbered.png)
+
+`python project.py 10 10 -m`: ![manhattan distance 10 x 10 maze](/images/1010manhattan.png)
+
+`python project.py 10 10 -p -m`: ![no portals manhattan distance 10 x 10 maze](/images/1010noportalmanhattan.png)
+
+`python project.py 10 10 -d 20`: ![standard 10 x 10 maze maximum distance](/images/1010distancemax.png)
+
+`python project.py 10 10 -b`: ![blank 10 x 10 maze](/images/1010blank.png)

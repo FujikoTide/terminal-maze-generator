@@ -195,14 +195,14 @@ def construct_maze(
         num = number_maze(viable_pos)
         for _ in num:
             maze[_] = num[_]
-    if portals:
-        ports = set_portals(portal_in, portal_out)
-        for _ in ports:
-            maze[_] = ports[_]
     if mn_num:
         manhattan = manhattan_numbers(xy, portal_in, portal_out)
         for _ in manhattan:
             maze[_] = manhattan[_]
+    if portals:
+        ports = set_portals(portal_in, portal_out)
+        for _ in ports:
+            maze[_] = ports[_]
 
     return maze
 
@@ -300,7 +300,7 @@ def manhattan_numbers(xy: {}, portal_in: int, portal_out: int) -> {}:
     out_xy = get_xy(portal_out, xy)
     mn_dict = {}
     for k, v in enumerate(xy):
-        if v not in [portal_in, portal_out]:
+        # if v not in [portal_in, portal_out]:
             mn = get_mn(get_xy(v, xy), out_xy)
             if mn > 99:
                 mn_dict[v - 1] = f"{str(mn)[:1]}"
