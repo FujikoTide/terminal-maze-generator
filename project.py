@@ -1,26 +1,109 @@
-import sys
 import random
+import argparse
 
 DIRECTIONS = ["n", "e", "s", "w"]
 
 
+    #       Turn this into a class, at least the parts that make sense
+    #       that will solve the recalling of the generate xy function,
+    #       can store that as a class/instance variable
+    #
+    #       TODO:
+    #           make class
+    #           error checking/handling
+    #           each data layer stored separately
+    #           all stored in json
+
+
+    #   TODO:
+    #       Make a function to take all the arrays and make a NEW array
+    #       superimpose the arrays to make a new array with all the
+    #       values applied and return that
+
+    #   TODO:
+    #       Make sure to make a copy of the maze and then apply the other data to it
+    #       according to the arguments:
+    #       manhattan numbers, entrance/exit etc
+
+    #    TODO:
+    #        Refactor
+    #        Make everything that uses horrible array maths use
+    #        enumerate and slices?
+    #        Save maze to text file! (see above: json!)
+    #
+
+
+    #   TODO:
+    #       Function that returns a character from whichever character set has been specified by the user using command line flag for the wall pieces
+    #       Default pieces are the current ones
+    #       Those characters can be stored in a dict, and returned depending on which charset is specified with a command line flag
+    #       a command line flag for specifying a single char to replace ALL wall pieces, i.e. "@" makes a maze with @ for walls
+    #       build_blank_maze function and clean_maze function would need to be modified at least?
+    #       need a new function to return the correct wall piece
+    #       this function is called from the previous 2 maze functions instead of hard coded wall piece?
+
 def main():
-
-    # args for number maze on/off, manhatten numbers on/off, portals on/off, algorithm, distance between portals, portals on the edge, help menu, limit for sizes
-    width, height = int(sys.argv[1]), int(sys.argv[2])
-
+    width, height, algorithm, numbers, manhattan_distance, portals, edge, blank, distance = get_input()
 
     maze = build_blank_maze(width, height)
-    # prints blank maze
-    # print(output_maze(maze, width, height))
     viable_pos = get_viable_pos(width, height)
     xy = generate_xy(width, viable_pos)
+    portal_in, portal_out = get_portals(width, height, viable_pos, xy, distance, edge)
 
-    portal_in, portal_out = get_portals(width, height, viable_pos, xy, 3, True)
+    if (not blank):
+        maze = construct_maze(maze, portal_in, portal_out, width,
+                            viable_pos, xy, num_maze=numbers, portals=portals, mn_num=manhattan_distance, algorithm=algorithm)
 
-    maze = construct_maze(maze, portal_in, portal_out, width,
-                          viable_pos, xy, num_maze=False, portals=True, mn_num=False, algorithm="recursive_backtrack")
     print(output_maze(maze, width, height))
+
+
+def get_input() -> tuple:
+    parser = argparse.ArgumentParser(description="Generate a maze in the terminal with a variety of options, minimum size 3 x 3", formatter_class=argparse.ArgumentDefaultsHelpFormatter, allow_abbrev=True, usage="%(prog)s [-h] [-a {rnd,bt,sw,rb}] [-n | -m] [-p] [-e] [-b] [-d DISTANCE] width height", epilog="terminal maze generator v1.0")
+
+    parser.add_argument("width", help="the width of the maze you wish to generate, range(3 to 45)", type=int, choices=range(3, 46), metavar="width")
+
+    parser.add_argument("height", help="the height of the maze you wish to generate, range(3 to 45)", type=int, choices=range(3, 46), metavar="height")
+
+    parser.add_argument("-a", "--algorithm", type=str, choices=["rnd", "bt", "sw", "rb"], default="recursive_backtrack", help="specify maze generating algorithm (random, binary tree, sidewinder, random walk, recursive backtrack)")
+
+    group = parser.add_mutually_exclusive_group()
+
+    group.add_argument("-n", "--numbers", default=False, help="numbers the cells of the maze, limited to mazes less than 1000 cells in size", action="store_true")
+
+    group.add_argument("-m", "--manhattan_distance", default=False, help="numbers the cells of the maze with manhattan distance numbering", action="store_true")
+
+    parser.add_argument("-p", "--portals", default=True, help="show entry and exit points in the maze", action="store_false")
+
+    parser.add_argument("-e", "--edge", default=False, help="align portals to the outside edge of the maze",  action="store_true")
+
+    parser.add_argument("-b", "--blank", default=False, help="print a blank maze",  action="store_true")
+
+    parser.add_argument("-d", "--distance", type=int, default=0, help="the minimum distance the entry and exit can be apart")
+
+    args = parser.parse_args()
+
+    width = args.width
+    height = args.height
+
+    if (args.algorithm == "random" or args.algorithm == "rnd"):
+        algorithm = "random"
+    elif (args.algorithm == "binarytree" or args.algorithm == "bt"):
+        algorithm = "binarytree"
+    elif (args.algorithm == "sidewinder" or args.algorithm == "sw"):
+        algorithm = "sidewinder"
+    elif (args.algorithm == "recursive_backtrack" or args.algorithm == "rb"):
+        algorithm = "recursive_backtrack"
+
+    numbers = args.numbers
+    manhattan_distance = args.manhattan_distance
+    portals = args.portals
+    edge = args.edge
+    blank = args.blank
+    distance = args.distance
+    if (width * height > 1000):
+        numbers = False
+
+    return (width, height, algorithm, numbers, manhattan_distance, portals, edge, blank, distance)
 
 
 def build_blank_maze(width: int, height: int) -> []:
@@ -75,6 +158,7 @@ def output_maze(maze: [], width: int, height: int) -> str:
 
     return combined
 
+
 def construct_maze(
         maze: [],
         portal_in: int,
@@ -96,11 +180,8 @@ def construct_maze(
     if algorithm == "sidewinder":
         algo_sidewinder(maze, width, viable_pos)
 
-    if algorithm == "randomwalk":
-        algo_randomwalk(maze, width, viable_pos)
-
     if algorithm == "recursive_backtrack":
-        recursive_backtracking(maze, width, viable_pos, portal_in, portal_out)
+        algo_recursive_backtracking(maze, width, viable_pos, portal_in, portal_out)
 
     cleaned_maze = clean_maze(maze, width, viable_pos)
     for _ in cleaned_maze:
@@ -114,14 +195,14 @@ def construct_maze(
         num = number_maze(viable_pos)
         for _ in num:
             maze[_] = num[_]
-    if portals:
-        ports = set_portals(portal_in, portal_out)
-        for _ in ports:
-            maze[_] = ports[_]
     if mn_num:
         manhattan = manhattan_numbers(xy, portal_in, portal_out)
         for _ in manhattan:
             maze[_] = manhattan[_]
+    if portals:
+        ports = set_portals(portal_in, portal_out)
+        for _ in ports:
+            maze[_] = ports[_]
 
     return maze
 
@@ -175,20 +256,9 @@ def algo_sidewinder(maze, width, viable_pos):
         current_position += 1
 
 
-def algo_randomwalk(maze, width, viable_pos):
-    current_position = random.choice(viable_pos)
-    pos = viable_pos[current_position]
-    visited_cells = []
-    while pos not in visited_cells:
-        next_direction = random.choice(DIRECTIONS)
-        old_pos, pos, old_direction = remove_wall(maze, width, viable_pos, pos, next_direction)
-        visited_cells.append(old_pos)
-
-
-def recursive_backtracking(maze, width, viable_pos, portal_in, portal_out):
+def algo_recursive_backtracking(maze, width, viable_pos, portal_in, portal_out):
     start_position = get_random_pos(viable_pos, portal_in, portal_out)
     visited_cells = [start_position]
-
 
     def visit_pos(position: int):
         while True:
@@ -230,7 +300,7 @@ def manhattan_numbers(xy: {}, portal_in: int, portal_out: int) -> {}:
     out_xy = get_xy(portal_out, xy)
     mn_dict = {}
     for k, v in enumerate(xy):
-        if v not in [portal_in, portal_out]:
+        # if v not in [portal_in, portal_out]:
             mn = get_mn(get_xy(v, xy), out_xy)
             if mn > 99:
                 mn_dict[v - 1] = f"{str(mn)[:1]}"
@@ -257,6 +327,10 @@ def get_portals(
         distance: int = None,
         edge: bool = None,
 ) -> tuple:
+    
+    if (distance > (width - 1 + height - 1)):
+        distance = (width - 1 + height - 1)
+
     if edge:
         edges = get_edge_pos(width, height, viable_pos)
 
@@ -387,7 +461,6 @@ def check_direction(width: int, viable_pos: [], cell: int, direction: str) -> tu
         cell2 = viable_pos[viable_pos.index(cell1) - 1]
 
     return cell1, cell2, direction
-
 
 
 def clean_maze(maze: [], width: int, viable_pos: []) -> {}:
