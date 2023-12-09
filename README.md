@@ -1,6 +1,6 @@
 # Terminal Maze Generator
 
-#### Video Demo: <URL HERE>
+#### Video Demo: [Terminal Maze Generator - Youtube](https://youtu.be/umn0W7SE9L4)
 
 ## Description: A Terminal Maze Generator
 
